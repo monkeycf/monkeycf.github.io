@@ -1,29 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2019/10/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+    <title>markdown基本语法</title>
+    <url>/2019/10/27/markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="使用-号区别不同级别的标题（1-6级）"><a href="#使用-号区别不同级别的标题（1-6级）" class="headerlink" title="使用#号区别不同级别的标题（1-6级）　"></a>使用#号区别不同级别的标题（1-6级）　</h3><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="无序列表（-号）"><a href="#无序列表（-号）" class="headerlink" title="无序列表（*号）"></a>无序列表（*号）</h3><ul>
+<li>无序列表</li>
+<li>无序列表</li>
+<li>无序列表</li>
+</ul>
+<h3 id="有序列表（数字）"><a href="#有序列表（数字）" class="headerlink" title="有序列表（数字）"></a>有序列表（数字）</h3><ol>
+<li>有序列表1</li>
+<li>有序列表2</li>
+<li>有序列表3</li>
+</ol>
+<h3 id="引用（-gt-大于号）"><a href="#引用（-gt-大于号）" class="headerlink" title="引用（&gt;大于号）"></a>引用（&gt;大于号）</h3><blockquote>
+<p>这是引用</p>
+</blockquote>
+<h3 id="图片与链接"><a href="#图片与链接" class="headerlink" title="图片与链接"></a>图片与链接</h3><p>图片： ![]()</p>
+<p>链接：[]()</p>
+<p>测试链接： <a href="https://github.com/monkeycf" target="_blank" rel="noopener">我的GitHub</a></p>
+<p>测试图片：</p>
+<p><img src="https://avatars1.githubusercontent.com/u/41945134?s=460&v=4" alt="这是图片"></p>
+<h3 id="粗体与斜体"><a href="#粗体与斜体" class="headerlink" title="粗体与斜体"></a>粗体与斜体</h3><p>粗体：   <strong>两个*包含文本段落</strong></p>
+<p>斜体：   <em>一个*包含文本段落</em></p>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><table>
+<thead>
+<tr>
+<th>tables</th>
+<th>hello</th>
+<th>hi</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>this</td>
+<td>ok</td>
+<td>bad</td>
+</tr>
+<tr>
+<td>that</td>
+<td>nice</td>
+<td>good</td>
+</tr>
+</tbody></table>
+<h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a>代码框</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fun = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(hello);</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><p>使用三个*即可</p>
+<hr>
 ]]></content>
       <categories>
-        <category>hello</category>
+        <category>markdown</category>
       </categories>
       <tags>
-        <tag>标签1</tag>
-        <tag>标签2</tag>
+        <tag>markdown</tag>
       </tags>
   </entry>
 </search>
