@@ -860,6 +860,31 @@
 ]]></content>
   </entry>
   <entry>
+    <title>cli工具(node)</title>
+    <url>/2020/05/25/2011156422/</url>
+    <content><![CDATA[<h1 id="初始化工程"><a href="#初始化工程" class="headerlink" title="初始化工程"></a>初始化工程</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bin/index.js 指定脚本解释器为node</span></span><br><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">"bin": &#123;</span><br><span class="line"> "create": "./bin/index.js"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">// 将npm 模块链接到对应的运⾏项⽬中去</span><br><span class="line">npm link</span><br></pre></td></tr></table></figure>
+
+<h1 id="定制命令行界面"><a href="#定制命令行界面" class="headerlink" title="定制命令行界面"></a>定制命令行界面</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bin/index.js</span></span><br><span class="line"><span class="keyword">const</span> program = <span class="built_in">require</span>(<span class="string">'commander'</span>); <span class="comment">// commander包</span></span><br><span class="line">program.version(<span class="built_in">require</span>(<span class="string">'../package'</span>).version);</span><br><span class="line"></span><br><span class="line">program</span><br><span class="line"> .command(<span class="string">'init &lt;name&gt;'</span>)</span><br><span class="line"> .description(<span class="string">'init project'</span>)</span><br><span class="line"> .action(<span class="function"><span class="params">name</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'init '</span> + name);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">program.parse(process.argv);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="欢迎界面"><a href="#欢迎界面" class="headerlink" title="欢迎界面"></a>欢迎界面</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// /lib/init.js</span></span><br><span class="line"><span class="keyword">const</span> &#123; promisify &#125; = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"><span class="keyword">const</span> figlet = promisify(<span class="built_in">require</span>(<span class="string">'figlet'</span>));</span><br><span class="line"><span class="keyword">const</span> clear = <span class="built_in">require</span>(<span class="string">'clear'</span>);</span><br><span class="line"><span class="keyword">const</span> chalk = <span class="built_in">require</span>(<span class="string">'chalk'</span>);</span><br><span class="line"><span class="keyword">const</span> log = <span class="function"><span class="params">content</span> =&gt;</span> <span class="built_in">console</span>.log(chalk.green(content));</span><br><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">async</span> name =&gt; &#123;</span><br><span class="line"> <span class="comment">// 打印欢迎画⾯</span></span><br><span class="line"> clear();</span><br><span class="line"> <span class="keyword">const</span> data = <span class="keyword">await</span> figlet(<span class="string">'Create'</span> + name);</span><br><span class="line"> log(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">program</span><br><span class="line"> .command(<span class="string">'init &lt;name&gt;'</span>)</span><br><span class="line"> .description(<span class="string">'init project'</span>)</span><br><span class="line"> .action(<span class="built_in">require</span>(<span class="string">'../lib/init'</span>))</span><br></pre></td></tr></table></figure>
+
+<h1 id="克隆模板"><a href="#克隆模板" class="headerlink" title="克隆模板"></a>克隆模板</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// /lib/download.js</span></span><br><span class="line"><span class="keyword">const</span> &#123; promisify &#125; = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"><span class="built_in">module</span>.exports.clone = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span>(<span class="params">repo,desc</span>) </span>&#123;</span><br><span class="line"> <span class="keyword">const</span> download =promisify(<span class="built_in">require</span>(<span class="string">'download-git-repo'</span>));</span><br><span class="line"> <span class="keyword">const</span> ora = <span class="built_in">require</span>(<span class="string">'ora'</span>);</span><br><span class="line"> <span class="keyword">const</span> process = ora(<span class="string">`下载.....<span class="subst">$&#123;repo&#125;</span>`</span>);</span><br><span class="line"> process.start();</span><br><span class="line"> <span class="keyword">await</span> download(repo, desc);</span><br><span class="line"> process.succeed();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// /lib/init.js</span></span><br><span class="line">log(<span class="string">'创建项⽬:'</span> + name);</span><br><span class="line"><span class="keyword">await</span> clone(<span class="string">'github:monkeycf/vue-template'</span>, name); <span class="comment">// 项目</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h1><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// promisiy化spawn</span></span><br><span class="line"><span class="comment">// 对接输出流</span></span><br><span class="line"><span class="keyword">const</span> spawnHandler = <span class="keyword">async</span> (...args) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> spawn = <span class="built_in">require</span>(<span class="string">'cross-spawn'</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> proc = spawn(...args)</span><br><span class="line">    proc.on(<span class="string">'close'</span>, () =&gt; &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">log(<span class="string">'安装依赖'</span>);</span><br><span class="line"><span class="keyword">await</span> spawnHandler(<span class="string">'npm'</span>, [<span class="string">'install'</span>], &#123;</span><br><span class="line">  stdio: <span class="string">'inherit'</span>,</span><br><span class="line">  cwd: <span class="string">`./<span class="subst">$&#123;name&#125;</span>`</span>,</span><br><span class="line">&#125;);</span><br><span class="line">log(chalk.green(<span class="string">'安装依赖成功'</span>));</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
     <title>es6-es10语法整理</title>
     <url>/2019/10/30/3122517155/</url>
     <content><![CDATA[<h1 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h1><h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">  <span class="comment">// constructor 构造函数</span></span><br><span class="line">  <span class="keyword">constructor</span>(name, color) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.color = color;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`name: <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span>, color: <span class="subst">$&#123;<span class="keyword">this</span>.color&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> animal = <span class="keyword">new</span> Animal(<span class="string">'dog'</span>, <span class="string">'black'</span>);</span><br><span class="line">animal.toString(); <span class="comment">// name: dog, color: black</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(animal.hasOwnProperty(<span class="string">'name'</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(animal.hasOwnProperty(<span class="string">'color'</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(animal.__proto__.hasOwnProperty(<span class="string">'toString'</span>)); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 类的继承</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(action) &#123;</span><br><span class="line">    <span class="keyword">super</span>(<span class="string">'cat'</span>, <span class="string">'white'</span>);</span><br><span class="line">    <span class="keyword">this</span>.action = action;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    <span class="keyword">super</span>.toString();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cat = <span class="keyword">new</span> Cat(<span class="string">'run'</span>);</span><br><span class="line">cat.toString(); <span class="comment">// name: cat, color: white</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(cat <span class="keyword">instanceof</span> Cat); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(cat <span class="keyword">instanceof</span> Animal); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
@@ -4440,49 +4465,174 @@ AB -&gt; 28
       </tags>
   </entry>
   <entry>
-    <title>webpack-模拟简单webpack</title>
-    <url>/2019/11/15/2020820168/</url>
-    <content><![CDATA[<h2 id="基本思路："><a href="#基本思路：" class="headerlink" title="基本思路："></a>基本思路：</h2><ol>
-<li>获取模块内容</li>
-<li>生成对应模块id（文件的相对路径）</li>
-<li>解析源码为AST</li>
-<li>修改AST节点，require–&gt;_<em>webpack_require_</em>   文件路径为相对路径</li>
-<li>保存依赖模块数组</li>
-<li>将AST打包回源码</li>
-<li>遍历递归依赖数组，修改依赖模块</li>
-<li>使用ejs模板打包代码</li>
+    <title>牛客-bilibili2020校招卷（二）</title>
+    <url>/2019/11/25/1241392941/</url>
+    <content><![CDATA[<h1 id="错题整理"><a href="#错题整理" class="headerlink" title="错题整理"></a>错题整理</h1><h2 id="canvas和svg"><a href="#canvas和svg" class="headerlink" title="canvas和svg"></a>canvas和svg</h2><table>
+<thead>
+<tr>
+<th align="left">Canvas</th>
+<th align="left">SVG</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">通过Javascript来绘制2D图形。</td>
+<td align="left">一种使用XML描述的2D图形的语言</td>
+</tr>
+<tr>
+<td align="left">是逐像素进行渲染的。</td>
+<td align="left">SVG基于XML意味着，SVG DOM中的每个元素都是可用的，可以为某个元素附加Javascript事件处理器。</td>
+</tr>
+<tr>
+<td align="left">其<strong>位置发生改变</strong>，会重新进行绘制。</td>
+<td align="left">在 SVG 中，每个被绘制的图形均被视为对象。如果 SVG 对象的<strong>属性发生变化</strong>，那么浏览器能够自动重现图形。</td>
+</tr>
+<tr>
+<td align="left"><strong>依赖</strong>分辨率</td>
+<td align="left"><strong>不依赖</strong>分辨率</td>
+</tr>
+<tr>
+<td align="left">不支持事件处理器</td>
+<td align="left">支持事件处理器</td>
+</tr>
+<tr>
+<td align="left">弱的文本渲染能力</td>
+<td align="left"><strong>最适合带有大型渲染</strong>区域的应用程序（比如谷歌地图）</td>
+</tr>
+<tr>
+<td align="left">能够以 .png 或 .jpg 格式保存结果图像</td>
+<td align="left">复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）</td>
+</tr>
+<tr>
+<td align="left">最<strong>适合图像密集型</strong>的游戏，其中的许多对象会被频繁重绘</td>
+<td align="left"><strong>不适合游戏应用</strong></td>
+</tr>
+</tbody></table>
+<h2 id="preload-amp-prefetch"><a href="#preload-amp-prefetch" class="headerlink" title="preload &amp; prefetch"></a>preload &amp; prefetch</h2><h3 id="preload"><a href="#preload" class="headerlink" title="preload"></a>preload</h3><p>使用 <code>preload</code> 可以对当前页面所需的脚本、样式等资源进行预加载，而无需等到解析到 <code>script</code> 和 <code>link</code> 标签时才进行加载。 </p>
+<h3 id="prefetch"><a href="#prefetch" class="headerlink" title="prefetch"></a>prefetch</h3><p><code>prefetch</code> 加载的资源一般不是用于当前页面的，即未来很可能用到的这样一些资源，利用浏览器空闲时间来下载 </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>对当前页面需要的资源，使用 <code>preload</code> 进行预加载，对其它页面需要的资源进行 <code>prefetch</code> 预加载。</p>
+<h2 id="transition"><a href="#transition" class="headerlink" title="transition"></a>transition</h2><blockquote>
+<p>不是所有的CSS样式值都可以过渡，只有具有中间值的属性才具备过渡效果 </p>
+<p>必须设有初始值</p>
+</blockquote>
+<p><a href="https://codepen.io/CHENSENRAN/pen/RwwmLYX" target="_blank" rel="noopener">初始值示例</a></p>
+<h2 id="重绘和回流"><a href="#重绘和回流" class="headerlink" title="重绘和回流"></a>重绘和回流</h2><h3 id="浏览器渲染过程"><a href="#浏览器渲染过程" class="headerlink" title="浏览器渲染过程"></a>浏览器渲染过程</h3><p><img src="http://img.chensenran.top/1574659924240.png" alt=""></p>
+<ol>
+<li>解析HTML，生成DOM树，解析CSS，生成CSSOM树</li>
+<li>将DOM树和CSSOM树结合，生成渲染树(Render Tree)</li>
+<li>Layout(回流):根据生成的渲染树，进行回流(Layout)，得到节点的几何信息（位置，大小）</li>
+<li>Painting(重绘):根据渲染树以及回流得到的几何信息，得到节点的绝对像素</li>
+<li>Display:将像素发送给GPU，展示在页面上。</li>
 </ol>
-<h2 id="相关配置"><a href="#相关配置" class="headerlink" title="相关配置"></a>相关配置</h2><h3 id="bin"><a href="#bin" class="headerlink" title="bin"></a>bin</h3><p>bin相当于运行哪一个命令，执行哪一个文件</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="string">"bin"</span>:&#123;</span><br><span class="line">    <span class="string">"csr-pack"</span>: <span class="string">"./bin/csr-pack.js"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="生成渲染树"><a href="#生成渲染树" class="headerlink" title="生成渲染树"></a>生成渲染树</h3><p><img src="http://img.chensenran.top/1574660007099.png" alt=""></p>
+<ol>
+<li>从DOM树的根节点开始遍历每个可见节点。</li>
+<li>对于每个可见的节点，找到CSSOM树中对应的规则，并应用它们。</li>
+<li>根据每个可见节点以及其对应的样式，组合生成渲染树。</li>
+</ol>
+<h3 id="回流"><a href="#回流" class="headerlink" title="回流"></a>回流</h3><blockquote>
+<p>当render树中的一部分或者全部因为大小边距等问题发生改变而需要重建的过程叫做回流（改变大小）</p>
+</blockquote>
+<h4 id="何时发生回流"><a href="#何时发生回流" class="headerlink" title="何时发生回流"></a>何时发生回流</h4><ol>
+<li><p>添加或者删除可见的DOM元素；</p>
+</li>
+<li><p>元素位置改变；</p>
+</li>
+<li><p>元素尺寸改变——边距、填充、边框、宽度和高度</p>
+</li>
+<li><p>内容改变——比如文本改变或者图片大小改变而引起的计算值宽度和高度改变；</p>
+</li>
+<li><p>页面渲染初始化；</p>
+</li>
+<li><p>浏览器窗口尺寸改变——resize事件发生时；</p>
+</li>
+</ol>
+<h3 id="重绘"><a href="#重绘" class="headerlink" title="重绘"></a>重绘</h3><blockquote>
+<p>当元素的一部分属性发生变化，如外观背景色不会引起布局变化而需要重新渲染的过程叫做重绘（改变样式）</p>
+</blockquote>
+<h4 id="何时发生重绘"><a href="#何时发生重绘" class="headerlink" title="何时发生重绘"></a>何时发生重绘</h4><ol>
+<li>元素的属性或者样式发生变化。 </li>
+</ol>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p><strong>注意：回流必将引起重绘，而重绘不一定会引起回流。</strong></p>
+<h2 id="防抖和节流"><a href="#防抖和节流" class="headerlink" title="防抖和节流"></a>防抖和节流</h2><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><blockquote>
+<p>任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。（重复点击，在最后一次点击后才执行）</p>
+</blockquote>
+<p>场景： 输入框查询</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// 创建一个标记用来存放定时器的返回值</span></span><br><span class="line">  <span class="keyword">let</span> timeout = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="comment">// 前一个定时器清除</span></span><br><span class="line"> 	 	clearTimeout(timeout);</span><br><span class="line"> 		<span class="comment">// 创建新的 setTimeout，</span></span><br><span class="line">    <span class="comment">// 这样就能保证点击按钮后的 interval 间隔内</span></span><br><span class="line">    <span class="comment">// 如果用户还点击了的话，就不会执行 fn 函数</span></span><br><span class="line">    timeout = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      fn.call(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="npm-link的流程"><a href="#npm-link的流程" class="headerlink" title="npm link的流程"></a>npm link的流程</h3><blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在csr-pack目录下 注意package.json中的bin配置以及后边是bin目录下的csr-pack.js </span></span><br><span class="line">npm link </span><br><span class="line"><span class="comment">// 在webpack-go5下</span></span><br><span class="line">npm link csr-pack</span><br></pre></td></tr></table></figure>
+<h3 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h3><blockquote>
+<p>指定时间间隔内只会执行一次任务。 </p>
 </blockquote>
-<h2 id="AST-抽象语法树"><a href="#AST-抽象语法树" class="headerlink" title="AST 抽象语法树"></a>AST 抽象语法树</h2><h3 id="babylon"><a href="#babylon" class="headerlink" title="babylon"></a>babylon</h3><p>把源码转化为AST</p>
-<h3 id="babel-traverse"><a href="#babel-traverse" class="headerlink" title="@babel/traverse"></a>@babel/traverse</h3><p>遍历AST节点</p>
-<h3 id="babel-types"><a href="#babel-types" class="headerlink" title="@babel/types"></a>@babel/types</h3><p>替换AST节点</p>
-<h3 id="babel-generator"><a href="#babel-generator" class="headerlink" title="@babel/generator"></a>@babel/generator</h3><p>将AST打包为源码</p>
-<blockquote>
-<p>process.cwd()</p>
-<p>获取当前工作目录</p>
-</blockquote>
-<h2 id="手写loader思路"><a href="#手写loader思路" class="headerlink" title="手写loader思路:"></a>手写loader思路:</h2><ol>
-<li>loader其实就是一个函数</li>
-<li>新增style-loader 和less-loader两个函数</li>
-<li>配置webpack.config.js中rules，为两个文件的绝对路径 </li>
-<li>在getSource获取源码时，对文件路径进行正则匹配</li>
-<li>匹配成功的文件 进行从后往前调用函数处理</li>
+<p>场景：</p>
+<ol>
+<li>懒加载要监听计算滚动条的位置，使用节流按一定时间的频率获取。</li>
+<li>用户点击提交按钮，假设我们知道接口大致的返回时间的情况下，我们使用节流，只允许一定时间内点击一次。</li>
 </ol>
-<p>##　plugin： 使用tapable实现生命周期控制</p>
-<h2 id="代码下载"><a href="#代码下载" class="headerlink" title="代码下载"></a>代码下载</h2><p><a href="http://img.chensenran.top/csr-pack-1573983594396.zip" target="_blank" rel="noopener">下载csr-pack代码</a></p>
-<h2 id="主要相关代码"><a href="#主要相关代码" class="headerlink" title="主要相关代码"></a>主要相关代码</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// compiler.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> babylon = <span class="built_in">require</span>(<span class="string">'babylon'</span>)</span><br><span class="line"><span class="keyword">const</span> types = <span class="built_in">require</span>(<span class="string">'@babel/types'</span>)</span><br><span class="line"><span class="keyword">const</span> traverse = <span class="built_in">require</span>(<span class="string">'@babel/traverse'</span>).default</span><br><span class="line"><span class="keyword">const</span> generator = <span class="built_in">require</span>(<span class="string">'@babel/generator'</span>).default</span><br><span class="line"><span class="keyword">const</span> ejs = <span class="built_in">require</span>(<span class="string">'ejs'</span>)</span><br><span class="line"><span class="keyword">const</span> &#123;SyncHook&#125; = <span class="built_in">require</span>(<span class="string">'tapable'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Compiler</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>config 配日信息</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(config) &#123;</span><br><span class="line">    <span class="keyword">this</span>.config = config;</span><br><span class="line">    <span class="keyword">this</span>.entryId; <span class="comment">// 需要保存入口文件的路径 './src/index.js'</span></span><br><span class="line">    <span class="comment">// 入口路径</span></span><br><span class="line">    <span class="keyword">this</span>.entry = config.entry;</span><br><span class="line">    <span class="keyword">this</span>.modules = &#123;&#125;;</span><br><span class="line">    <span class="keyword">this</span>.root = process.cwd(); <span class="comment">// 工作路径</span></span><br><span class="line">    <span class="keyword">this</span>.assets = &#123;&#125;; <span class="comment">// 输出的多个文件</span></span><br><span class="line">    <span class="keyword">this</span>.hooks = &#123;</span><br><span class="line">      entryOptions: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      compile: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      afterCompile: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      afterPlugins: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      run: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      emit: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      done: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用插件</span></span><br><span class="line">    <span class="keyword">let</span> plugins = <span class="keyword">this</span>.config.plugins;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(plugins)) &#123;</span><br><span class="line">      plugins.forEach(<span class="function"><span class="params">plugin</span> =&gt;</span> &#123;</span><br><span class="line">        plugin.apply(<span class="keyword">this</span>);</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取文件内容，并处理loader</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>modulePath 文件的绝对路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return <span class="type">&#123;string | ArrayBuffer&#125;</span> </span>// 文件内容</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getSource(modulePath) &#123;</span><br><span class="line">    <span class="keyword">let</span> content = fs.readFileSync(modulePath, <span class="string">'utf8'</span>);</span><br><span class="line">    <span class="comment">// 获取需要处理的loader数组</span></span><br><span class="line">    <span class="keyword">let</span> &#123;rules&#125; = <span class="keyword">this</span>.config.module;</span><br><span class="line">    rules.forEach(<span class="function"><span class="params">rule</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 对test选项进行正则匹配</span></span><br><span class="line">      <span class="keyword">if</span> (rule.test.test(modulePath)) &#123;</span><br><span class="line">        <span class="keyword">let</span> use = rule.use;</span><br><span class="line">        <span class="keyword">let</span> len = use.length - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">normalLoader</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="comment">// 使用loader函数处理</span></span><br><span class="line">          content = <span class="built_in">require</span>(use[len--])(content);</span><br><span class="line">          <span class="comment">// 不止一个loader，递归调用后续loader进行依次处理</span></span><br><span class="line">          <span class="keyword">if</span> (len &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            normalLoader();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        normalLoader();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 解析修改源码</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>source // 源码</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>parentPath // 父路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return <span class="type">&#123;&#123;sourceCode: *, dependencies: *&#125;</span></span>&#125; // sourceCode：修改后的源码，dependencies：子依赖模块</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  parse(source, parentPath) &#123;</span><br><span class="line">    <span class="comment">// 源码解析为AST</span></span><br><span class="line">    <span class="keyword">let</span> ast = babylon.parse(source);</span><br><span class="line">    <span class="keyword">let</span> dependencies = []; <span class="comment">// 模块依赖数组</span></span><br><span class="line">    traverse(ast, &#123;</span><br><span class="line">      CallExpression(p) &#123;</span><br><span class="line">        <span class="keyword">let</span> &#123;node&#125; = p; <span class="comment">// 对应的节点</span></span><br><span class="line">        <span class="keyword">if</span> (node.callee.name === <span class="string">'require'</span>) &#123;</span><br><span class="line">          node.callee.name = <span class="string">' __webpack_require__'</span>;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">let</span> moduleValue = node.arguments[<span class="number">0</span>].value;</span><br><span class="line">          moduleValue = moduleValue + (path.extname(moduleValue) ? <span class="string">''</span> : <span class="string">'.js'</span>); <span class="comment">// 判断是否有后缀名</span></span><br><span class="line">          moduleValue = <span class="string">`./<span class="subst">$&#123;path.join(parentPath, moduleValue)&#125;</span>`</span>.replace(<span class="regexp">/\\/g</span>, <span class="string">'/'</span>); <span class="comment">// 修改为相对路径</span></span><br><span class="line">          dependencies.push(moduleValue); <span class="comment">// 添加依赖模块</span></span><br><span class="line">          node.arguments = [types.stringLiteral(moduleValue)]; <span class="comment">// 修改AST节点</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">let</span> sourceCode = generator(ast).code;</span><br><span class="line">    <span class="keyword">return</span> &#123;sourceCode, dependencies&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构建模块</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>modulePath 文件的绝对路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>isEntry 是否为主入口文件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  buildModule(modulePath, isEntry) &#123;</span><br><span class="line">    <span class="comment">// 拿到模块的内容</span></span><br><span class="line">    <span class="keyword">let</span> source = <span class="keyword">this</span>.getSource(modulePath);</span><br><span class="line">    <span class="comment">// 生成模块id  = modulePath - root</span></span><br><span class="line">    <span class="keyword">let</span> moduleName = <span class="string">`./<span class="subst">$&#123;path.relative(<span class="keyword">this</span>.root, modulePath)&#125;</span>`</span>.replace(<span class="regexp">/\\/g</span>, <span class="string">'/'</span>);</span><br><span class="line">    <span class="comment">// 保存主入口路径</span></span><br><span class="line">    <span class="keyword">if</span> (isEntry) &#123;</span><br><span class="line">      <span class="keyword">this</span>.entryId = moduleName</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 解析需要改造的源码 并返回依赖列表</span></span><br><span class="line">    <span class="keyword">const</span> &#123;sourceCode, dependencies&#125; = <span class="keyword">this</span>.parse(source, path.dirname(moduleName));</span><br><span class="line">    <span class="comment">// 把相对路径和模块中的内容对应起来</span></span><br><span class="line">    <span class="keyword">this</span>.modules[moduleName] = sourceCode;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历 递归依赖列表</span></span><br><span class="line">    dependencies.forEach(<span class="function"><span class="params">dep</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.buildModule(path.join(<span class="keyword">this</span>.root, dep), <span class="literal">false</span>); <span class="comment">// 不是主入口</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 写入打包完成的文件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  emitFile() &#123;</span><br><span class="line">    <span class="keyword">this</span>.hooks.emit.call();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> outputPath = path.resolve(<span class="keyword">this</span>.config.output.path, <span class="keyword">this</span>.config.output.filename); <span class="comment">// 输出文件路径</span></span><br><span class="line">    <span class="keyword">const</span> ejsFile = <span class="keyword">this</span>.getSource(path.resolve(__dirname, <span class="string">'main.ejs'</span>));</span><br><span class="line">    <span class="keyword">const</span> renderFile = ejs.render(ejsFile, &#123;</span><br><span class="line">      entryId: <span class="keyword">this</span>.entryId,</span><br><span class="line">      modules: <span class="keyword">this</span>.modules,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">this</span>.assets [outputPath] = renderFile;</span><br><span class="line">    fs.writeFileSync(outputPath, renderFile);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 执行函数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  run() &#123;</span><br><span class="line">    <span class="keyword">this</span>.hooks.run.call();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.hooks.compile.call();</span><br><span class="line">    <span class="comment">// 执行 并且创建模块的依赖关系</span></span><br><span class="line">    <span class="keyword">this</span>.buildModule(path.resolve(<span class="keyword">this</span>.root, <span class="keyword">this</span>.entry), <span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">this</span>.hooks.afterCompile.call();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个文件，打包后的文件</span></span><br><span class="line">    <span class="keyword">this</span>.emitFile();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.hooks.done.call();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Compiler;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// 标记</span></span><br><span class="line">  <span class="keyword">let</span> canRun = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	  <span class="keyword">if</span>(!canRun) &#123;</span><br><span class="line">  	  <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    canRun = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// 定时器</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    	fn.call(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">      canRun = <span class="literal">true</span>;</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="编程题整理"><a href="#编程题整理" class="headerlink" title="编程题整理"></a>编程题整理</h1><h2 id="复数乘法"><a href="#复数乘法" class="headerlink" title="复数乘法"></a>复数乘法</h2><blockquote>
+<p>输入两个表示复数的字符串，输出它们相乘的结果的字符串</p>
+<p>复数字符串用a+bi表示(a, b 为整数, i为虚数单位，i2=1)</p>
+</blockquote>
+<h3 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">两个表示复数的字符串</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述:"></a><strong>输出描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">两个数相乘的结果的字符串</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><h4 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1+2i</span><br><span class="line">2+1</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0+5i</span><br></pre></td></tr></table></figure>
+
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(1+2i)(2+i) &#x3D; (2 + i + 4i + 2i * i) &#x3D; 0 + 5i</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><h4 id="输入-1"><a href="#输入-1" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1+-2i</span><br><span class="line">3+4i</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出-1"><a href="#输出-1" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">11+-2i</span><br></pre></td></tr></table></figure>
+
+<h4 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(1+-2i)(3+4i) &#x3D; (3 + 4i - 6i - 8i * i) &#x3D; 11+-2i</span><br></pre></td></tr></table></figure>
+
+<h3 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pluralMultiply</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> [key1, value1] = num1.toString().split(<span class="string">'+'</span>);</span><br><span class="line">  <span class="keyword">let</span> [key2, value2] = num2.toString().split(<span class="string">'+'</span>);</span><br><span class="line">  value1 = value1.replace(<span class="string">'i'</span>, <span class="string">''</span>);</span><br><span class="line">  value2 = value2.replace(<span class="string">'i'</span>, <span class="string">''</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;(+key1 * +key2) - (+value1 * +value2)&#125;</span>+<span class="subst">$&#123;(+key1 * +value2) + (+key2 * +value1)&#125;</span>i`</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> t = <span class="number">1</span>,num1,num2;</span><br><span class="line"><span class="keyword">while</span> (line = readline()) &#123;</span><br><span class="line">    <span class="keyword">if</span>(t === <span class="number">1</span>)&#123;</span><br><span class="line">        num1 = line;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        num2 = line;</span><br><span class="line">    &#125;</span><br><span class="line">    t++;</span><br><span class="line">&#125;</span><br><span class="line">print(pluralMultiply(num1,num2));</span><br></pre></td></tr></table></figure>
+
+<h2 id="一年中的第几天"><a href="#一年中的第几天" class="headerlink" title="一年中的第几天"></a>一年中的第几天</h2><blockquote>
+<p>输入一个”YYYY-MM-dd”格式的日期字符串，输出该天是当年的第几天（1 月 1 日是每年的第 1 天） </p>
+</blockquote>
+<h3 id="输入描述-1"><a href="#输入描述-1" class="headerlink" title="输入描述:"></a>输入描述:</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">一个&quot;YYYY-MM-dd&quot;格式的表示日期的字符串</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出描述-1"><a href="#输出描述-1" class="headerlink" title="输出描述:"></a><strong>输出描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">该天是当年的第几天</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例1-1"><a href="#示例1-1" class="headerlink" title="示例1"></a>示例1</h3><h4 id="输入-2"><a href="#输入-2" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2019-01-09</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出-2"><a href="#输出-2" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">9</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例2-1"><a href="#示例2-1" class="headerlink" title="示例2"></a>示例2</h3><h4 id="输入-3"><a href="#输入-3" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2004-03-01</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出-3"><a href="#输出-3" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">61</span><br></pre></td></tr></table></figure>
+
+<h4 id="说明-2"><a href="#说明-2" class="headerlink" title="说明"></a>说明</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2004年为闰年，所以是第31+29+1&#x3D;61天</span><br></pre></td></tr></table></figure>
+
+<h3 id="AC代码-1"><a href="#AC代码-1" class="headerlink" title="AC代码"></a>AC代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDay</span>(<span class="params">date</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> arr = [<span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>];</span><br><span class="line">  <span class="keyword">const</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(date);</span><br><span class="line">  <span class="keyword">const</span> month = d.getMonth();</span><br><span class="line">  <span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; month; i++) &#123;</span><br><span class="line">    sum += arr[i];</span><br><span class="line">    <span class="keyword">if</span> (i === <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> year = d.getFullYear();</span><br><span class="line">      <span class="keyword">if</span> (year % <span class="number">100</span> === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (year % <span class="number">400</span> === <span class="number">0</span>) &#123;</span><br><span class="line">          sum++;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (year % <span class="number">4</span> === <span class="number">0</span>) &#123;</span><br><span class="line">        sum++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">  &#125;</span><br><span class="line">  sum += d.getDate();</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>(line = readline())&#123;</span><br><span class="line">    print(getDay(line))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="k个一组翻转链表"><a href="#k个一组翻转链表" class="headerlink" title="k个一组翻转链表"></a>k个一组翻转链表</h2><p>给你一个链表，每 k 个节点一组进行翻转，请返回翻转后的链表。</p>
+<p>如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。 </p>
+<p>给定这个链表：1-&gt;2-&gt;3-&gt;4-&gt;5<br>当 k = 2 时，应当返回: 2-&gt;1-&gt;4-&gt;3-&gt;5<br>当 k = 3 时，应当返回: 3-&gt;2-&gt;1-&gt;4-&gt;5 </p>
+<h3 id="输入描述-2"><a href="#输入描述-2" class="headerlink" title="输入描述:"></a><strong>输入描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一行：依次输入链表中的各个元素，以&quot;#&quot;结束第二行：每组数量k</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出描述-2"><a href="#输出描述-2" class="headerlink" title="输出描述:"></a><strong>输出描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">处理后的链表中的各个元素，以&quot;-&gt;&quot;连接</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例1-2"><a href="#示例1-2" class="headerlink" title="示例1"></a>示例1</h3><h4 id="输入-4"><a href="#输入-4" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1 2 3 4 5 #</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出-4"><a href="#输出-4" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2-&gt;1-&gt;4-&gt;3-&gt;5</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例2-2"><a href="#示例2-2" class="headerlink" title="示例2"></a>示例2</h3><h4 id="输入-5"><a href="#输入-5" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1 2 3 4 5 #</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出-5"><a href="#输出-5" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">3-&gt;2-&gt;1-&gt;4-&gt;5</span><br></pre></td></tr></table></figure>
+
+<h3 id="AC代码-2"><a href="#AC代码-2" class="headerlink" title="AC代码"></a>AC代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrayReverseHandler</span>(<span class="params">arr, num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> t = [];</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>, result = [];</span><br><span class="line">  <span class="keyword">const</span> pushResult = <span class="function">(<span class="params">temp</span>) =&gt;</span> &#123;</span><br><span class="line">    count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (temp.length) &#123;</span><br><span class="line">      result.push(temp.pop());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  arr.forEach(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    count++;</span><br><span class="line">    t.push(item);</span><br><span class="line">    <span class="keyword">if</span> (item === <span class="string">'#'</span>) &#123;</span><br><span class="line">      t.pop()</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (count === +num) &#123;</span><br><span class="line">      pushResult(t);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  result = result.concat(t);</span><br><span class="line">  <span class="keyword">return</span> result.join(<span class="string">'-&gt;'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> t = <span class="number">1</span>,arr,num;</span><br><span class="line"><span class="keyword">while</span>(line = readline()) &#123;</span><br><span class="line">    <span class="keyword">if</span>(t++ === <span class="number">1</span>)&#123;</span><br><span class="line">        arr = line.split(<span class="string">" "</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        num = line;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">print(arrayReverseHandler(arr,num))</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
-        <category>webpack</category>
+        <category>牛客</category>
       </categories>
       <tags>
-        <tag>webpack</tag>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -5028,177 +5178,6 @@ AB -&gt; 28
       </tags>
   </entry>
   <entry>
-    <title>牛客-bilibili2020校招卷（二）</title>
-    <url>/2019/11/25/1241392941/</url>
-    <content><![CDATA[<h1 id="错题整理"><a href="#错题整理" class="headerlink" title="错题整理"></a>错题整理</h1><h2 id="canvas和svg"><a href="#canvas和svg" class="headerlink" title="canvas和svg"></a>canvas和svg</h2><table>
-<thead>
-<tr>
-<th align="left">Canvas</th>
-<th align="left">SVG</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">通过Javascript来绘制2D图形。</td>
-<td align="left">一种使用XML描述的2D图形的语言</td>
-</tr>
-<tr>
-<td align="left">是逐像素进行渲染的。</td>
-<td align="left">SVG基于XML意味着，SVG DOM中的每个元素都是可用的，可以为某个元素附加Javascript事件处理器。</td>
-</tr>
-<tr>
-<td align="left">其<strong>位置发生改变</strong>，会重新进行绘制。</td>
-<td align="left">在 SVG 中，每个被绘制的图形均被视为对象。如果 SVG 对象的<strong>属性发生变化</strong>，那么浏览器能够自动重现图形。</td>
-</tr>
-<tr>
-<td align="left"><strong>依赖</strong>分辨率</td>
-<td align="left"><strong>不依赖</strong>分辨率</td>
-</tr>
-<tr>
-<td align="left">不支持事件处理器</td>
-<td align="left">支持事件处理器</td>
-</tr>
-<tr>
-<td align="left">弱的文本渲染能力</td>
-<td align="left"><strong>最适合带有大型渲染</strong>区域的应用程序（比如谷歌地图）</td>
-</tr>
-<tr>
-<td align="left">能够以 .png 或 .jpg 格式保存结果图像</td>
-<td align="left">复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）</td>
-</tr>
-<tr>
-<td align="left">最<strong>适合图像密集型</strong>的游戏，其中的许多对象会被频繁重绘</td>
-<td align="left"><strong>不适合游戏应用</strong></td>
-</tr>
-</tbody></table>
-<h2 id="preload-amp-prefetch"><a href="#preload-amp-prefetch" class="headerlink" title="preload &amp; prefetch"></a>preload &amp; prefetch</h2><h3 id="preload"><a href="#preload" class="headerlink" title="preload"></a>preload</h3><p>使用 <code>preload</code> 可以对当前页面所需的脚本、样式等资源进行预加载，而无需等到解析到 <code>script</code> 和 <code>link</code> 标签时才进行加载。 </p>
-<h3 id="prefetch"><a href="#prefetch" class="headerlink" title="prefetch"></a>prefetch</h3><p><code>prefetch</code> 加载的资源一般不是用于当前页面的，即未来很可能用到的这样一些资源，利用浏览器空闲时间来下载 </p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>对当前页面需要的资源，使用 <code>preload</code> 进行预加载，对其它页面需要的资源进行 <code>prefetch</code> 预加载。</p>
-<h2 id="transition"><a href="#transition" class="headerlink" title="transition"></a>transition</h2><blockquote>
-<p>不是所有的CSS样式值都可以过渡，只有具有中间值的属性才具备过渡效果 </p>
-<p>必须设有初始值</p>
-</blockquote>
-<p><a href="https://codepen.io/CHENSENRAN/pen/RwwmLYX" target="_blank" rel="noopener">初始值示例</a></p>
-<h2 id="重绘和回流"><a href="#重绘和回流" class="headerlink" title="重绘和回流"></a>重绘和回流</h2><h3 id="浏览器渲染过程"><a href="#浏览器渲染过程" class="headerlink" title="浏览器渲染过程"></a>浏览器渲染过程</h3><p><img src="http://img.chensenran.top/1574659924240.png" alt=""></p>
-<ol>
-<li>解析HTML，生成DOM树，解析CSS，生成CSSOM树</li>
-<li>将DOM树和CSSOM树结合，生成渲染树(Render Tree)</li>
-<li>Layout(回流):根据生成的渲染树，进行回流(Layout)，得到节点的几何信息（位置，大小）</li>
-<li>Painting(重绘):根据渲染树以及回流得到的几何信息，得到节点的绝对像素</li>
-<li>Display:将像素发送给GPU，展示在页面上。</li>
-</ol>
-<h3 id="生成渲染树"><a href="#生成渲染树" class="headerlink" title="生成渲染树"></a>生成渲染树</h3><p><img src="http://img.chensenran.top/1574660007099.png" alt=""></p>
-<ol>
-<li>从DOM树的根节点开始遍历每个可见节点。</li>
-<li>对于每个可见的节点，找到CSSOM树中对应的规则，并应用它们。</li>
-<li>根据每个可见节点以及其对应的样式，组合生成渲染树。</li>
-</ol>
-<h3 id="回流"><a href="#回流" class="headerlink" title="回流"></a>回流</h3><blockquote>
-<p>当render树中的一部分或者全部因为大小边距等问题发生改变而需要重建的过程叫做回流（改变大小）</p>
-</blockquote>
-<h4 id="何时发生回流"><a href="#何时发生回流" class="headerlink" title="何时发生回流"></a>何时发生回流</h4><ol>
-<li><p>添加或者删除可见的DOM元素；</p>
-</li>
-<li><p>元素位置改变；</p>
-</li>
-<li><p>元素尺寸改变——边距、填充、边框、宽度和高度</p>
-</li>
-<li><p>内容改变——比如文本改变或者图片大小改变而引起的计算值宽度和高度改变；</p>
-</li>
-<li><p>页面渲染初始化；</p>
-</li>
-<li><p>浏览器窗口尺寸改变——resize事件发生时；</p>
-</li>
-</ol>
-<h3 id="重绘"><a href="#重绘" class="headerlink" title="重绘"></a>重绘</h3><blockquote>
-<p>当元素的一部分属性发生变化，如外观背景色不会引起布局变化而需要重新渲染的过程叫做重绘（改变样式）</p>
-</blockquote>
-<h4 id="何时发生重绘"><a href="#何时发生重绘" class="headerlink" title="何时发生重绘"></a>何时发生重绘</h4><ol>
-<li>元素的属性或者样式发生变化。 </li>
-</ol>
-<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p><strong>注意：回流必将引起重绘，而重绘不一定会引起回流。</strong></p>
-<h2 id="防抖和节流"><a href="#防抖和节流" class="headerlink" title="防抖和节流"></a>防抖和节流</h2><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><blockquote>
-<p>任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。（重复点击，在最后一次点击后才执行）</p>
-</blockquote>
-<p>场景： 输入框查询</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// 创建一个标记用来存放定时器的返回值</span></span><br><span class="line">  <span class="keyword">let</span> timeout = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="comment">// 前一个定时器清除</span></span><br><span class="line"> 	 	clearTimeout(timeout);</span><br><span class="line"> 		<span class="comment">// 创建新的 setTimeout，</span></span><br><span class="line">    <span class="comment">// 这样就能保证点击按钮后的 interval 间隔内</span></span><br><span class="line">    <span class="comment">// 如果用户还点击了的话，就不会执行 fn 函数</span></span><br><span class="line">    timeout = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      fn.call(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h3><blockquote>
-<p>指定时间间隔内只会执行一次任务。 </p>
-</blockquote>
-<p>场景：</p>
-<ol>
-<li>懒加载要监听计算滚动条的位置，使用节流按一定时间的频率获取。</li>
-<li>用户点击提交按钮，假设我们知道接口大致的返回时间的情况下，我们使用节流，只允许一定时间内点击一次。</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// 标记</span></span><br><span class="line">  <span class="keyword">let</span> canRun = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	  <span class="keyword">if</span>(!canRun) &#123;</span><br><span class="line">  	  <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    canRun = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// 定时器</span></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    	fn.call(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">      canRun = <span class="literal">true</span>;</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="编程题整理"><a href="#编程题整理" class="headerlink" title="编程题整理"></a>编程题整理</h1><h2 id="复数乘法"><a href="#复数乘法" class="headerlink" title="复数乘法"></a>复数乘法</h2><blockquote>
-<p>输入两个表示复数的字符串，输出它们相乘的结果的字符串</p>
-<p>复数字符串用a+bi表示(a, b 为整数, i为虚数单位，i2=1)</p>
-</blockquote>
-<h3 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">两个表示复数的字符串</span><br></pre></td></tr></table></figure>
-
-<h3 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述:"></a><strong>输出描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">两个数相乘的结果的字符串</span><br></pre></td></tr></table></figure>
-
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><h4 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1+2i</span><br><span class="line">2+1</span><br></pre></td></tr></table></figure>
-
-<h4 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0+5i</span><br></pre></td></tr></table></figure>
-
-<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(1+2i)(2+i) &#x3D; (2 + i + 4i + 2i * i) &#x3D; 0 + 5i</span><br></pre></td></tr></table></figure>
-
-<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><h4 id="输入-1"><a href="#输入-1" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1+-2i</span><br><span class="line">3+4i</span><br></pre></td></tr></table></figure>
-
-<h4 id="输出-1"><a href="#输出-1" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">11+-2i</span><br></pre></td></tr></table></figure>
-
-<h4 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(1+-2i)(3+4i) &#x3D; (3 + 4i - 6i - 8i * i) &#x3D; 11+-2i</span><br></pre></td></tr></table></figure>
-
-<h3 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pluralMultiply</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> [key1, value1] = num1.toString().split(<span class="string">'+'</span>);</span><br><span class="line">  <span class="keyword">let</span> [key2, value2] = num2.toString().split(<span class="string">'+'</span>);</span><br><span class="line">  value1 = value1.replace(<span class="string">'i'</span>, <span class="string">''</span>);</span><br><span class="line">  value2 = value2.replace(<span class="string">'i'</span>, <span class="string">''</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;(+key1 * +key2) - (+value1 * +value2)&#125;</span>+<span class="subst">$&#123;(+key1 * +value2) + (+key2 * +value1)&#125;</span>i`</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> t = <span class="number">1</span>,num1,num2;</span><br><span class="line"><span class="keyword">while</span> (line = readline()) &#123;</span><br><span class="line">    <span class="keyword">if</span>(t === <span class="number">1</span>)&#123;</span><br><span class="line">        num1 = line;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        num2 = line;</span><br><span class="line">    &#125;</span><br><span class="line">    t++;</span><br><span class="line">&#125;</span><br><span class="line">print(pluralMultiply(num1,num2));</span><br></pre></td></tr></table></figure>
-
-<h2 id="一年中的第几天"><a href="#一年中的第几天" class="headerlink" title="一年中的第几天"></a>一年中的第几天</h2><blockquote>
-<p>输入一个”YYYY-MM-dd”格式的日期字符串，输出该天是当年的第几天（1 月 1 日是每年的第 1 天） </p>
-</blockquote>
-<h3 id="输入描述-1"><a href="#输入描述-1" class="headerlink" title="输入描述:"></a>输入描述:</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">一个&quot;YYYY-MM-dd&quot;格式的表示日期的字符串</span><br></pre></td></tr></table></figure>
-
-<h3 id="输出描述-1"><a href="#输出描述-1" class="headerlink" title="输出描述:"></a><strong>输出描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">该天是当年的第几天</span><br></pre></td></tr></table></figure>
-
-<h3 id="示例1-1"><a href="#示例1-1" class="headerlink" title="示例1"></a>示例1</h3><h4 id="输入-2"><a href="#输入-2" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2019-01-09</span><br></pre></td></tr></table></figure>
-
-<h4 id="输出-2"><a href="#输出-2" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">9</span><br></pre></td></tr></table></figure>
-
-<h3 id="示例2-1"><a href="#示例2-1" class="headerlink" title="示例2"></a>示例2</h3><h4 id="输入-3"><a href="#输入-3" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2004-03-01</span><br></pre></td></tr></table></figure>
-
-<h4 id="输出-3"><a href="#输出-3" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">61</span><br></pre></td></tr></table></figure>
-
-<h4 id="说明-2"><a href="#说明-2" class="headerlink" title="说明"></a>说明</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2004年为闰年，所以是第31+29+1&#x3D;61天</span><br></pre></td></tr></table></figure>
-
-<h3 id="AC代码-1"><a href="#AC代码-1" class="headerlink" title="AC代码"></a>AC代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDay</span>(<span class="params">date</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> arr = [<span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>];</span><br><span class="line">  <span class="keyword">const</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>(date);</span><br><span class="line">  <span class="keyword">const</span> month = d.getMonth();</span><br><span class="line">  <span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; month; i++) &#123;</span><br><span class="line">    sum += arr[i];</span><br><span class="line">    <span class="keyword">if</span> (i === <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> year = d.getFullYear();</span><br><span class="line">      <span class="keyword">if</span> (year % <span class="number">100</span> === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (year % <span class="number">400</span> === <span class="number">0</span>) &#123;</span><br><span class="line">          sum++;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (year % <span class="number">4</span> === <span class="number">0</span>) &#123;</span><br><span class="line">        sum++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">  &#125;</span><br><span class="line">  sum += d.getDate();</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>(line = readline())&#123;</span><br><span class="line">    print(getDay(line))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="k个一组翻转链表"><a href="#k个一组翻转链表" class="headerlink" title="k个一组翻转链表"></a>k个一组翻转链表</h2><p>给你一个链表，每 k 个节点一组进行翻转，请返回翻转后的链表。</p>
-<p>如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。 </p>
-<p>给定这个链表：1-&gt;2-&gt;3-&gt;4-&gt;5<br>当 k = 2 时，应当返回: 2-&gt;1-&gt;4-&gt;3-&gt;5<br>当 k = 3 时，应当返回: 3-&gt;2-&gt;1-&gt;4-&gt;5 </p>
-<h3 id="输入描述-2"><a href="#输入描述-2" class="headerlink" title="输入描述:"></a><strong>输入描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一行：依次输入链表中的各个元素，以&quot;#&quot;结束第二行：每组数量k</span><br></pre></td></tr></table></figure>
-
-<h3 id="输出描述-2"><a href="#输出描述-2" class="headerlink" title="输出描述:"></a><strong>输出描述:</strong></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">处理后的链表中的各个元素，以&quot;-&gt;&quot;连接</span><br></pre></td></tr></table></figure>
-
-<h3 id="示例1-2"><a href="#示例1-2" class="headerlink" title="示例1"></a>示例1</h3><h4 id="输入-4"><a href="#输入-4" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1 2 3 4 5 #</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
-
-<h4 id="输出-4"><a href="#输出-4" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2-&gt;1-&gt;4-&gt;3-&gt;5</span><br></pre></td></tr></table></figure>
-
-<h3 id="示例2-2"><a href="#示例2-2" class="headerlink" title="示例2"></a>示例2</h3><h4 id="输入-5"><a href="#输入-5" class="headerlink" title="输入"></a>输入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1 2 3 4 5 #</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
-
-<h4 id="输出-5"><a href="#输出-5" class="headerlink" title="输出"></a>输出</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">3-&gt;2-&gt;1-&gt;4-&gt;5</span><br></pre></td></tr></table></figure>
-
-<h3 id="AC代码-2"><a href="#AC代码-2" class="headerlink" title="AC代码"></a>AC代码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arrayReverseHandler</span>(<span class="params">arr, num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> t = [];</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>, result = [];</span><br><span class="line">  <span class="keyword">const</span> pushResult = <span class="function">(<span class="params">temp</span>) =&gt;</span> &#123;</span><br><span class="line">    count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (temp.length) &#123;</span><br><span class="line">      result.push(temp.pop());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  arr.forEach(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    count++;</span><br><span class="line">    t.push(item);</span><br><span class="line">    <span class="keyword">if</span> (item === <span class="string">'#'</span>) &#123;</span><br><span class="line">      t.pop()</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (count === +num) &#123;</span><br><span class="line">      pushResult(t);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  result = result.concat(t);</span><br><span class="line">  <span class="keyword">return</span> result.join(<span class="string">'-&gt;'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> t = <span class="number">1</span>,arr,num;</span><br><span class="line"><span class="keyword">while</span>(line = readline()) &#123;</span><br><span class="line">    <span class="keyword">if</span>(t++ === <span class="number">1</span>)&#123;</span><br><span class="line">        arr = line.split(<span class="string">" "</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        num = line;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">print(arrayReverseHandler(arr,num))</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>牛客</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>牛客-bilibili2020校招卷（一）</title>
     <url>/2019/11/25/2045299701/</url>
     <content><![CDATA[<h1 id="错题整理"><a href="#错题整理" class="headerlink" title="错题整理"></a>错题整理</h1><h2 id="块级元素"><a href="#块级元素" class="headerlink" title="块级元素"></a>块级元素</h2><p>块级元素与行内元素的区别：</p>
@@ -5465,6 +5444,52 @@ AB -&gt; 28
       </categories>
       <tags>
         <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>webpack-模拟简单webpack</title>
+    <url>/2019/11/15/2020820168/</url>
+    <content><![CDATA[<h2 id="基本思路："><a href="#基本思路：" class="headerlink" title="基本思路："></a>基本思路：</h2><ol>
+<li>获取模块内容</li>
+<li>生成对应模块id（文件的相对路径）</li>
+<li>解析源码为AST</li>
+<li>修改AST节点，require–&gt;_<em>webpack_require_</em>   文件路径为相对路径</li>
+<li>保存依赖模块数组</li>
+<li>将AST打包回源码</li>
+<li>遍历递归依赖数组，修改依赖模块</li>
+<li>使用ejs模板打包代码</li>
+</ol>
+<h2 id="相关配置"><a href="#相关配置" class="headerlink" title="相关配置"></a>相关配置</h2><h3 id="bin"><a href="#bin" class="headerlink" title="bin"></a>bin</h3><p>bin相当于运行哪一个命令，执行哪一个文件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="string">"bin"</span>:&#123;</span><br><span class="line">    <span class="string">"csr-pack"</span>: <span class="string">"./bin/csr-pack.js"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="npm-link的流程"><a href="#npm-link的流程" class="headerlink" title="npm link的流程"></a>npm link的流程</h3><blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在csr-pack目录下 注意package.json中的bin配置以及后边是bin目录下的csr-pack.js </span></span><br><span class="line">npm link </span><br><span class="line"><span class="comment">// 在webpack-go5下</span></span><br><span class="line">npm link csr-pack</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="AST-抽象语法树"><a href="#AST-抽象语法树" class="headerlink" title="AST 抽象语法树"></a>AST 抽象语法树</h2><h3 id="babylon"><a href="#babylon" class="headerlink" title="babylon"></a>babylon</h3><p>把源码转化为AST</p>
+<h3 id="babel-traverse"><a href="#babel-traverse" class="headerlink" title="@babel/traverse"></a>@babel/traverse</h3><p>遍历AST节点</p>
+<h3 id="babel-types"><a href="#babel-types" class="headerlink" title="@babel/types"></a>@babel/types</h3><p>替换AST节点</p>
+<h3 id="babel-generator"><a href="#babel-generator" class="headerlink" title="@babel/generator"></a>@babel/generator</h3><p>将AST打包为源码</p>
+<blockquote>
+<p>process.cwd()</p>
+<p>获取当前工作目录</p>
+</blockquote>
+<h2 id="手写loader思路"><a href="#手写loader思路" class="headerlink" title="手写loader思路:"></a>手写loader思路:</h2><ol>
+<li>loader其实就是一个函数</li>
+<li>新增style-loader 和less-loader两个函数</li>
+<li>配置webpack.config.js中rules，为两个文件的绝对路径 </li>
+<li>在getSource获取源码时，对文件路径进行正则匹配</li>
+<li>匹配成功的文件 进行从后往前调用函数处理</li>
+</ol>
+<p>##　plugin： 使用tapable实现生命周期控制</p>
+<h2 id="代码下载"><a href="#代码下载" class="headerlink" title="代码下载"></a>代码下载</h2><p><a href="http://img.chensenran.top/csr-pack-1573983594396.zip" target="_blank" rel="noopener">下载csr-pack代码</a></p>
+<h2 id="主要相关代码"><a href="#主要相关代码" class="headerlink" title="主要相关代码"></a>主要相关代码</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// compiler.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> babylon = <span class="built_in">require</span>(<span class="string">'babylon'</span>)</span><br><span class="line"><span class="keyword">const</span> types = <span class="built_in">require</span>(<span class="string">'@babel/types'</span>)</span><br><span class="line"><span class="keyword">const</span> traverse = <span class="built_in">require</span>(<span class="string">'@babel/traverse'</span>).default</span><br><span class="line"><span class="keyword">const</span> generator = <span class="built_in">require</span>(<span class="string">'@babel/generator'</span>).default</span><br><span class="line"><span class="keyword">const</span> ejs = <span class="built_in">require</span>(<span class="string">'ejs'</span>)</span><br><span class="line"><span class="keyword">const</span> &#123;SyncHook&#125; = <span class="built_in">require</span>(<span class="string">'tapable'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Compiler</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>config 配日信息</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(config) &#123;</span><br><span class="line">    <span class="keyword">this</span>.config = config;</span><br><span class="line">    <span class="keyword">this</span>.entryId; <span class="comment">// 需要保存入口文件的路径 './src/index.js'</span></span><br><span class="line">    <span class="comment">// 入口路径</span></span><br><span class="line">    <span class="keyword">this</span>.entry = config.entry;</span><br><span class="line">    <span class="keyword">this</span>.modules = &#123;&#125;;</span><br><span class="line">    <span class="keyword">this</span>.root = process.cwd(); <span class="comment">// 工作路径</span></span><br><span class="line">    <span class="keyword">this</span>.assets = &#123;&#125;; <span class="comment">// 输出的多个文件</span></span><br><span class="line">    <span class="keyword">this</span>.hooks = &#123;</span><br><span class="line">      entryOptions: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      compile: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      afterCompile: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      afterPlugins: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      run: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      emit: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">      done: <span class="keyword">new</span> SyncHook(),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用插件</span></span><br><span class="line">    <span class="keyword">let</span> plugins = <span class="keyword">this</span>.config.plugins;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(plugins)) &#123;</span><br><span class="line">      plugins.forEach(<span class="function"><span class="params">plugin</span> =&gt;</span> &#123;</span><br><span class="line">        plugin.apply(<span class="keyword">this</span>);</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取文件内容，并处理loader</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>modulePath 文件的绝对路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return <span class="type">&#123;string | ArrayBuffer&#125;</span> </span>// 文件内容</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getSource(modulePath) &#123;</span><br><span class="line">    <span class="keyword">let</span> content = fs.readFileSync(modulePath, <span class="string">'utf8'</span>);</span><br><span class="line">    <span class="comment">// 获取需要处理的loader数组</span></span><br><span class="line">    <span class="keyword">let</span> &#123;rules&#125; = <span class="keyword">this</span>.config.module;</span><br><span class="line">    rules.forEach(<span class="function"><span class="params">rule</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 对test选项进行正则匹配</span></span><br><span class="line">      <span class="keyword">if</span> (rule.test.test(modulePath)) &#123;</span><br><span class="line">        <span class="keyword">let</span> use = rule.use;</span><br><span class="line">        <span class="keyword">let</span> len = use.length - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">normalLoader</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="comment">// 使用loader函数处理</span></span><br><span class="line">          content = <span class="built_in">require</span>(use[len--])(content);</span><br><span class="line">          <span class="comment">// 不止一个loader，递归调用后续loader进行依次处理</span></span><br><span class="line">          <span class="keyword">if</span> (len &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            normalLoader();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        normalLoader();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 解析修改源码</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>source // 源码</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>parentPath // 父路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return <span class="type">&#123;&#123;sourceCode: *, dependencies: *&#125;</span></span>&#125; // sourceCode：修改后的源码，dependencies：子依赖模块</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  parse(source, parentPath) &#123;</span><br><span class="line">    <span class="comment">// 源码解析为AST</span></span><br><span class="line">    <span class="keyword">let</span> ast = babylon.parse(source);</span><br><span class="line">    <span class="keyword">let</span> dependencies = []; <span class="comment">// 模块依赖数组</span></span><br><span class="line">    traverse(ast, &#123;</span><br><span class="line">      CallExpression(p) &#123;</span><br><span class="line">        <span class="keyword">let</span> &#123;node&#125; = p; <span class="comment">// 对应的节点</span></span><br><span class="line">        <span class="keyword">if</span> (node.callee.name === <span class="string">'require'</span>) &#123;</span><br><span class="line">          node.callee.name = <span class="string">' __webpack_require__'</span>;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">let</span> moduleValue = node.arguments[<span class="number">0</span>].value;</span><br><span class="line">          moduleValue = moduleValue + (path.extname(moduleValue) ? <span class="string">''</span> : <span class="string">'.js'</span>); <span class="comment">// 判断是否有后缀名</span></span><br><span class="line">          moduleValue = <span class="string">`./<span class="subst">$&#123;path.join(parentPath, moduleValue)&#125;</span>`</span>.replace(<span class="regexp">/\\/g</span>, <span class="string">'/'</span>); <span class="comment">// 修改为相对路径</span></span><br><span class="line">          dependencies.push(moduleValue); <span class="comment">// 添加依赖模块</span></span><br><span class="line">          node.arguments = [types.stringLiteral(moduleValue)]; <span class="comment">// 修改AST节点</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">let</span> sourceCode = generator(ast).code;</span><br><span class="line">    <span class="keyword">return</span> &#123;sourceCode, dependencies&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构建模块</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>modulePath 文件的绝对路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>isEntry 是否为主入口文件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  buildModule(modulePath, isEntry) &#123;</span><br><span class="line">    <span class="comment">// 拿到模块的内容</span></span><br><span class="line">    <span class="keyword">let</span> source = <span class="keyword">this</span>.getSource(modulePath);</span><br><span class="line">    <span class="comment">// 生成模块id  = modulePath - root</span></span><br><span class="line">    <span class="keyword">let</span> moduleName = <span class="string">`./<span class="subst">$&#123;path.relative(<span class="keyword">this</span>.root, modulePath)&#125;</span>`</span>.replace(<span class="regexp">/\\/g</span>, <span class="string">'/'</span>);</span><br><span class="line">    <span class="comment">// 保存主入口路径</span></span><br><span class="line">    <span class="keyword">if</span> (isEntry) &#123;</span><br><span class="line">      <span class="keyword">this</span>.entryId = moduleName</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 解析需要改造的源码 并返回依赖列表</span></span><br><span class="line">    <span class="keyword">const</span> &#123;sourceCode, dependencies&#125; = <span class="keyword">this</span>.parse(source, path.dirname(moduleName));</span><br><span class="line">    <span class="comment">// 把相对路径和模块中的内容对应起来</span></span><br><span class="line">    <span class="keyword">this</span>.modules[moduleName] = sourceCode;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历 递归依赖列表</span></span><br><span class="line">    dependencies.forEach(<span class="function"><span class="params">dep</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.buildModule(path.join(<span class="keyword">this</span>.root, dep), <span class="literal">false</span>); <span class="comment">// 不是主入口</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 写入打包完成的文件</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  emitFile() &#123;</span><br><span class="line">    <span class="keyword">this</span>.hooks.emit.call();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> outputPath = path.resolve(<span class="keyword">this</span>.config.output.path, <span class="keyword">this</span>.config.output.filename); <span class="comment">// 输出文件路径</span></span><br><span class="line">    <span class="keyword">const</span> ejsFile = <span class="keyword">this</span>.getSource(path.resolve(__dirname, <span class="string">'main.ejs'</span>));</span><br><span class="line">    <span class="keyword">const</span> renderFile = ejs.render(ejsFile, &#123;</span><br><span class="line">      entryId: <span class="keyword">this</span>.entryId,</span><br><span class="line">      modules: <span class="keyword">this</span>.modules,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">this</span>.assets [outputPath] = renderFile;</span><br><span class="line">    fs.writeFileSync(outputPath, renderFile);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 执行函数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  run() &#123;</span><br><span class="line">    <span class="keyword">this</span>.hooks.run.call();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.hooks.compile.call();</span><br><span class="line">    <span class="comment">// 执行 并且创建模块的依赖关系</span></span><br><span class="line">    <span class="keyword">this</span>.buildModule(path.resolve(<span class="keyword">this</span>.root, <span class="keyword">this</span>.entry), <span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">this</span>.hooks.afterCompile.call();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个文件，打包后的文件</span></span><br><span class="line">    <span class="keyword">this</span>.emitFile();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.hooks.done.call();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Compiler;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>webpack</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
       </tags>
   </entry>
 </search>
