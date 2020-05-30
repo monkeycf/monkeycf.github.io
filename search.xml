@@ -106,67 +106,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Git命令整理</title>
-    <url>/2020/02/23/2687911277/</url>
-    <content><![CDATA[<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-
-<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><ul>
-<li>添加文件：git add &lt;fileName&gt;</li>
-<li>提交至暂存区：git commit -m “something”</li>
-<li>查看状态：git status</li>
-<li>查看不同：git diff &lt;fileName&gt;</li>
-<li>查看日志：git log</li>
-<li>回滚历史版本：git reset –hard &lt;commit_id&gt;</li>
-<li>查看命令历史：git reflog</li>
-<li>丢弃工作区修改：git checkout – file</li>
-<li>丢弃暂存区修改：git reset HEAD &lt;fileName&gt;</li>
-<li>删除文件：git rm &lt;fileName&gt;</li>
-</ul>
-<h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><ul>
-<li>关联远程仓库：git remote add origin &lt;address&gt;</li>
-<li>推送并关联master分支：git push -u origin master</li>
-<li>推送master分支：git push origin master</li>
-<li>克隆项目：git clone &lt;address&gt;</li>
-</ul>
-<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
-<li>创建分支：git branch &lt;name&gt;</li>
-<li>切换分支：git checkout &lt;name&gt;</li>
-<li>创建并切换分支：git checkout -b &lt;name&gt;</li>
-<li>查看当前分支：git branch</li>
-<li>与当前分支合并：git merge &lt;name&gt;</li>
-<li>删除分支：git branch -d &lt;name&gt;</li>
-<li>产看合并图：git log –graph</li>
-<li>推送分支：git push origin &lt;name&gt;</li>
-<li>拉取：git pull</li>
-<li>链接关系创建：git branch –set-upstream-to &lt;name&gt; origin/&lt;name&gt;</li>
-<li>查看远程库信息：git remote -v<h2 id="新版本命令"><a href="#新版本命令" class="headerlink" title="新版本命令"></a>新版本命令</h2></li>
-<li>创建：git switch -c &lt;name&gt;</li>
-<li>切换：git switch &lt;name&gt;</li>
-</ul>
-<h2 id="Bug分支"><a href="#Bug分支" class="headerlink" title="Bug分支"></a>Bug分支</h2><ul>
-<li>暂存当前分支：git stash</li>
-<li>查看当前暂存列表：git stash list</li>
-<li>恢复暂存：git stash apply</li>
-<li>删除暂存：git stash drop</li>
-<li>恢复暂存并删除：git stash pop</li>
-<li>复制bug分支修改内容到当前分支：git cherry-pick &lt;commit&gt;</li>
-</ul>
-<h1 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h1><ul>
-<li>创建标签：git tag &lt;name&gt; ?&lt;commit&gt;</li>
-<li>查看所有标签：git tag</li>
-<li>查看标签详情：git show &lt;name&gt;</li>
-<li>创建带注释的标签：git tag -a &lt;name&gt; -m “&lt;message&gt;” &lt;commit&gt;</li>
-<li>删除标签：git tag -d &lt;name&gt;</li>
-<li>推送标签：git push origin &lt;name&gt;</li>
-<li>推送所有标签：git push origin –tags</li>
-<li>删除远程标签：git push origin :refs/tags/&lt;name&gt;</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Grid布局</title>
     <url>/2020/02/22/3615068729/</url>
     <content><![CDATA[<h1 id="Grid布局"><a href="#Grid布局" class="headerlink" title="Grid布局"></a>Grid布局</h1><p><img src="http://img.chensenran.top/1582385835420.png" alt=""></p>
@@ -517,6 +456,67 @@
       </tags>
   </entry>
   <entry>
+    <title>Git命令整理</title>
+    <url>/2020/02/23/2687911277/</url>
+    <content><![CDATA[<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><ul>
+<li>添加文件：git add &lt;fileName&gt;</li>
+<li>提交至暂存区：git commit -m “something”</li>
+<li>查看状态：git status</li>
+<li>查看不同：git diff &lt;fileName&gt;</li>
+<li>查看日志：git log</li>
+<li>回滚历史版本：git reset –hard &lt;commit_id&gt;</li>
+<li>查看命令历史：git reflog</li>
+<li>丢弃工作区修改：git checkout – file</li>
+<li>丢弃暂存区修改：git reset HEAD &lt;fileName&gt;</li>
+<li>删除文件：git rm &lt;fileName&gt;</li>
+</ul>
+<h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><ul>
+<li>关联远程仓库：git remote add origin &lt;address&gt;</li>
+<li>推送并关联master分支：git push -u origin master</li>
+<li>推送master分支：git push origin master</li>
+<li>克隆项目：git clone &lt;address&gt;</li>
+</ul>
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
+<li>创建分支：git branch &lt;name&gt;</li>
+<li>切换分支：git checkout &lt;name&gt;</li>
+<li>创建并切换分支：git checkout -b &lt;name&gt;</li>
+<li>查看当前分支：git branch</li>
+<li>与当前分支合并：git merge &lt;name&gt;</li>
+<li>删除分支：git branch -d &lt;name&gt;</li>
+<li>产看合并图：git log –graph</li>
+<li>推送分支：git push origin &lt;name&gt;</li>
+<li>拉取：git pull</li>
+<li>链接关系创建：git branch –set-upstream-to &lt;name&gt; origin/&lt;name&gt;</li>
+<li>查看远程库信息：git remote -v<h2 id="新版本命令"><a href="#新版本命令" class="headerlink" title="新版本命令"></a>新版本命令</h2></li>
+<li>创建：git switch -c &lt;name&gt;</li>
+<li>切换：git switch &lt;name&gt;</li>
+</ul>
+<h2 id="Bug分支"><a href="#Bug分支" class="headerlink" title="Bug分支"></a>Bug分支</h2><ul>
+<li>暂存当前分支：git stash</li>
+<li>查看当前暂存列表：git stash list</li>
+<li>恢复暂存：git stash apply</li>
+<li>删除暂存：git stash drop</li>
+<li>恢复暂存并删除：git stash pop</li>
+<li>复制bug分支修改内容到当前分支：git cherry-pick &lt;commit&gt;</li>
+</ul>
+<h1 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h1><ul>
+<li>创建标签：git tag &lt;name&gt; ?&lt;commit&gt;</li>
+<li>查看所有标签：git tag</li>
+<li>查看标签详情：git show &lt;name&gt;</li>
+<li>创建带注释的标签：git tag -a &lt;name&gt; -m “&lt;message&gt;” &lt;commit&gt;</li>
+<li>删除标签：git tag -d &lt;name&gt;</li>
+<li>推送标签：git push origin &lt;name&gt;</li>
+<li>推送所有标签：git push origin –tags</li>
+<li>删除远程标签：git push origin :refs/tags/&lt;name&gt;</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue Router笔记</title>
     <url>/2020/03/01/1000998621/</url>
     <content><![CDATA[<h1 id="Vue-Router功能"><a href="#Vue-Router功能" class="headerlink" title="Vue Router功能"></a>Vue Router功能</h1><ul>
@@ -730,6 +730,40 @@
       </tags>
   </entry>
   <entry>
+    <title>Widget小部件</title>
+    <url>/2020/02/18/2959249981/</url>
+    <content><![CDATA[<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><ul>
+<li>Center</li>
+<li>Container 容器</li>
+<li>ListView</li>
+<li>ListTile</li>
+<li>GirdView</li>
+<li>Column</li>
+<li>Row</li>
+<li>wrap</li>
+<li>Padding</li>
+<li>Expanded flex布局</li>
+<li>Stack</li>
+<li>Align</li>
+<li>Positioned</li>
+<li>AspectRatio 子元素宽高比</li>
+<li>SizedBox<h1 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h1></li>
+<li>Image</li>
+<li>NetWorkImage</li>
+<li>CircleAvatar<h1 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h1></li>
+<li>StatelessWidget</li>
+<li>Text</li>
+<li>MaterialApp</li>
+<li>Scaffold</li>
+<li>ChipOval 圆角</li>
+<li>Icon</li>
+<li>Card</li>
+<li>RaisedButton</li>
+<li>Chip</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Vuex笔记</title>
     <url>/2020/02/29/2056824029/</url>
     <content><![CDATA[<h1 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h1><ul>
@@ -824,40 +858,6 @@
       <tags>
         <tag>Vuex</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Widget小部件</title>
-    <url>/2020/02/18/2959249981/</url>
-    <content><![CDATA[<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><ul>
-<li>Center</li>
-<li>Container 容器</li>
-<li>ListView</li>
-<li>ListTile</li>
-<li>GirdView</li>
-<li>Column</li>
-<li>Row</li>
-<li>wrap</li>
-<li>Padding</li>
-<li>Expanded flex布局</li>
-<li>Stack</li>
-<li>Align</li>
-<li>Positioned</li>
-<li>AspectRatio 子元素宽高比</li>
-<li>SizedBox<h1 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h1></li>
-<li>Image</li>
-<li>NetWorkImage</li>
-<li>CircleAvatar<h1 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h1></li>
-<li>StatelessWidget</li>
-<li>Text</li>
-<li>MaterialApp</li>
-<li>Scaffold</li>
-<li>ChipOval 圆角</li>
-<li>Icon</li>
-<li>Card</li>
-<li>RaisedButton</li>
-<li>Chip</li>
-</ul>
-]]></content>
   </entry>
   <entry>
     <title>cli工具(node)</title>
@@ -992,60 +992,6 @@
       <tags>
         <tag>es6-es10</tag>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>markdown基本语法</title>
-    <url>/2019/10/27/1204465438/</url>
-    <content><![CDATA[<h3 id="使用-号区别不同级别的标题（1-6级）"><a href="#使用-号区别不同级别的标题（1-6级）" class="headerlink" title="使用#号区别不同级别的标题（1-6级）　"></a>使用#号区别不同级别的标题（1-6级）　</h3><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="无序列表（-号）"><a href="#无序列表（-号）" class="headerlink" title="无序列表（*号）"></a>无序列表（*号）</h3><ul>
-<li>无序列表</li>
-<li>无序列表</li>
-<li>无序列表</li>
-</ul>
-<h3 id="有序列表（数字）"><a href="#有序列表（数字）" class="headerlink" title="有序列表（数字）"></a>有序列表（数字）</h3><ol>
-<li>有序列表1</li>
-<li>有序列表2</li>
-<li>有序列表3</li>
-</ol>
-<h3 id="引用（-gt-大于号）"><a href="#引用（-gt-大于号）" class="headerlink" title="引用（&gt;大于号）"></a>引用（&gt;大于号）</h3><blockquote>
-<p>这是引用</p>
-</blockquote>
-<h3 id="图片与链接"><a href="#图片与链接" class="headerlink" title="图片与链接"></a>图片与链接</h3><p>图片： ![]()</p>
-<p>链接：[]()</p>
-<p>测试链接： <a href="https://github.com/monkeycf" target="_blank" rel="noopener">我的GitHub</a></p>
-<p>测试图片：</p>
-<p><img src="https://avatars1.githubusercontent.com/u/41945134?s=460&v=4" alt="这是图片"></p>
-<h3 id="粗体与斜体"><a href="#粗体与斜体" class="headerlink" title="粗体与斜体"></a>粗体与斜体</h3><p>粗体：   <strong>两个*包含文本段落</strong></p>
-<p>斜体：   <em>一个*包含文本段落</em></p>
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><table>
-<thead>
-<tr>
-<th>tables</th>
-<th>hello</th>
-<th>hi</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>this</td>
-<td>ok</td>
-<td>bad</td>
-</tr>
-<tr>
-<td>that</td>
-<td>nice</td>
-<td>good</td>
-</tr>
-</tbody></table>
-<h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a>代码框</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fun = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(hello);</span><br></pre></td></tr></table></figure>
-
-<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><p>使用三个*即可</p>
-<hr>
-]]></content>
-      <categories>
-        <category>markdown</category>
-      </categories>
-      <tags>
-        <tag>markdown</tag>
       </tags>
   </entry>
   <entry>
@@ -1481,6 +1427,60 @@
       </categories>
       <tags>
         <tag>sass</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>markdown基本语法</title>
+    <url>/2019/10/27/1204465438/</url>
+    <content><![CDATA[<h3 id="使用-号区别不同级别的标题（1-6级）"><a href="#使用-号区别不同级别的标题（1-6级）" class="headerlink" title="使用#号区别不同级别的标题（1-6级）　"></a>使用#号区别不同级别的标题（1-6级）　</h3><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="无序列表（-号）"><a href="#无序列表（-号）" class="headerlink" title="无序列表（*号）"></a>无序列表（*号）</h3><ul>
+<li>无序列表</li>
+<li>无序列表</li>
+<li>无序列表</li>
+</ul>
+<h3 id="有序列表（数字）"><a href="#有序列表（数字）" class="headerlink" title="有序列表（数字）"></a>有序列表（数字）</h3><ol>
+<li>有序列表1</li>
+<li>有序列表2</li>
+<li>有序列表3</li>
+</ol>
+<h3 id="引用（-gt-大于号）"><a href="#引用（-gt-大于号）" class="headerlink" title="引用（&gt;大于号）"></a>引用（&gt;大于号）</h3><blockquote>
+<p>这是引用</p>
+</blockquote>
+<h3 id="图片与链接"><a href="#图片与链接" class="headerlink" title="图片与链接"></a>图片与链接</h3><p>图片： ![]()</p>
+<p>链接：[]()</p>
+<p>测试链接： <a href="https://github.com/monkeycf" target="_blank" rel="noopener">我的GitHub</a></p>
+<p>测试图片：</p>
+<p><img src="https://avatars1.githubusercontent.com/u/41945134?s=460&v=4" alt="这是图片"></p>
+<h3 id="粗体与斜体"><a href="#粗体与斜体" class="headerlink" title="粗体与斜体"></a>粗体与斜体</h3><p>粗体：   <strong>两个*包含文本段落</strong></p>
+<p>斜体：   <em>一个*包含文本段落</em></p>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><table>
+<thead>
+<tr>
+<th>tables</th>
+<th>hello</th>
+<th>hi</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>this</td>
+<td>ok</td>
+<td>bad</td>
+</tr>
+<tr>
+<td>that</td>
+<td>nice</td>
+<td>good</td>
+</tr>
+</tbody></table>
+<h3 id="代码框"><a href="#代码框" class="headerlink" title="代码框"></a>代码框</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fun = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(hello);</span><br></pre></td></tr></table></figure>
+
+<h3 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h3><p>使用三个*即可</p>
+<hr>
+]]></content>
+      <categories>
+        <category>markdown</category>
+      </categories>
+      <tags>
+        <tag>markdown</tag>
       </tags>
   </entry>
   <entry>
@@ -2034,8 +2034,8 @@
 <p><img src="http://img.chensenran.top/1590826129545.png" alt="Microsoft Edge测试结果"></p>
 </li>
 <li><p>Google Chrome  83.0.4103.61（64 位）</p>
+<p><img src="http://img.chensenran.top/1590826392920.png" alt=""></p>
 </li>
-<li></li>
 </ol>
 ]]></content>
   </entry>
